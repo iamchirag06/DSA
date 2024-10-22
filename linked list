@@ -1,0 +1,218 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define the structure for a node
+struct node {
+    int info;
+    struct node *next;
+};
+
+// Global variable for the head of the linked list
+struct node *head = NULL;
+
+// Function to insert an element at the beginning of the list
+void insertAtBeginning() {
+    struct node *ptr = (struct node *)malloc(sizeof(struct node));
+    if (ptr == NULL) {
+        printf("Overflow \n");
+        return;
+    }
+    printf("Enter the value: ");
+    scanf("%d", &ptr->info);  // Get the value to insert
+    ptr->next = head;  // New node points to the current head
+    head = ptr;  // Update head to point to the new node
+}
+
+// Function to insert an element at the end of the list
+void insertAtEnd() {
+    struct node *ptr = (struct node *)malloc(sizeof(struct node));
+    if (ptr == NULL) {
+        printf("Overflow \n");
+        return;
+    }
+    printf("Enter the value: ");
+    scanf("%d", &ptr->info);  // Get the value to insert
+    ptr->next = NULL;  // New node will point to NULL
+
+    if (head == NULL) {
+        // If the list is empty, make the new node the head
+        head = ptr;
+    } else {
+        // Traverse to the end of the list and link the new node
+        struct node *temp = head;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = ptr;  // Link the new node
+    }
+}
+
+// Function to insert an element at a specific location
+void insertAtLocation() {
+    int loc, i;
+    printf("Enter the location to insert (0 for beginning): ");
+    scanf("%d", &loc);
+
+    if (loc < 0) {
+        printf("Invalid location!\n");
+        return;
+    }
+
+    if (loc == 0) {
+        insertAtBeginning();
+        return;
+    }
+
+    struct node *ptr = (struct node *)malloc(sizeof(struct node));
+    if (ptr == NULL) {
+        printf("Overflow \n");
+        return;
+    }
+    printf("Enter the value: ");
+    scanf("%d", &ptr->info);  // Get the value to insert
+
+    struct node *temp = head;
+    for (i = 0; i < loc - 1 && temp != NULL; i++) {
+        temp = temp->next;
+    }
+
+    if (temp == NULL) {
+        printf("Location exceeds the length of the list.\n");
+        free(ptr);
+    } else {
+        ptr->next = temp->next;  // Link the new node to the next node
+        temp->next = ptr;  // Link the previous node to the new node
+    }
+}
+
+// Function to delete a node from the beginning
+void deleteFromBeginning() {
+    if (head == NULL) {
+        printf("Underflow \n");
+        return;
+    }
+    struct node *temp = head;
+    head = head->next;  // Move head to the next node
+    printf("Deleted: %d\n", temp->info);
+    free(temp);  // Free the memory of the deleted node
+}
+
+// Function to delete a node from the end
+void deleteFromEnd() {
+    if (head == NULL) {
+        printf("Underflow \n");
+        return;
+    }
+    struct node *temp = head;
+    if (temp->next == NULL) {
+        // If there's only one node
+        printf("Deleted: %d\n", temp->info);
+        free(temp);
+        head = NULL;
+    } else {
+        // Traverse to the second last node
+        while (temp->next->next != NULL) {
+            temp = temp->next;
+        }
+        printf("Deleted: %d\n", temp->next->info);
+        free(temp->next);  // Free the last node
+        temp->next = NULL;  // Set the second last node's next to NULL
+    }
+}
+
+// Function to delete a node from a specific location
+void deleteFromLocation() {
+    int loc, i;
+    printf("Enter the location to delete (0 for beginning): ");
+    scanf("%d", &loc);
+
+    if (loc < 0) {
+        printf("Invalid location!\n");
+        return;
+    }
+
+    if (loc == 0) {
+        deleteFromBeginning();
+        return;
+    }
+
+    struct node *temp = head;
+    struct node *prev = NULL;
+
+    for (i = 0; i < loc && temp != NULL ; i++) {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    if (temp == NULL) {
+        printf("Location exceeds the length of the list.\n");
+    } else {
+        printf("Deleted: %d\n", temp->info);
+        prev->next = temp->next;  // Link the previous node to the next node
+        free(temp);  // Free the memory of the deleted node
+    }
+}
+
+// Function to traverse the list
+void traverse() {
+    struct node *ptr = head;
+    if (ptr == NULL) {
+        printf("List is empty.\n");
+        return;
+    }
+    printf("List elements: ");
+    while (ptr != NULL) {  // Traverse until the end of the list
+        printf("%d ", ptr->info);
+        ptr = ptr->next;
+    }
+    printf("\n");
+}
+
+// Main function
+int main() {
+    int choice;
+    char ch;
+    do {
+        printf("1. Insert at beginning \n");
+        printf("2. Insert at end \n");
+        printf("3. Insert at location \n");
+        printf("4. Delete from beginning \n");
+        printf("5. Delete from end \n");
+        printf("6. Delete from location \n");
+        printf("7. Traverse \n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                insertAtBeginning();
+                break;
+            case 2:
+                insertAtEnd();
+                break;
+            case 3:
+                insertAtLocation();
+                break;
+            case 4:
+                deleteFromBeginning();
+                break;
+            case 5:
+                deleteFromEnd();
+                break;
+            case 6:
+                deleteFromLocation();
+                break;
+            case 7:
+                traverse();
+                break;
+            default:
+                printf("You entered a wrong choice!!\n");
+        }
+
+        printf(" \nDo you want to continue (Y/N): ");
+        getchar();  // Clear newline character from buffer
+        scanf("%c", &ch);  // Get user's choice to continue
+    } while (ch == 'Y' || ch == 'y');
+
+    return 0;
+}
