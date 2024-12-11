@@ -1,1 +1,113 @@
-Queue 
+Program 9 
+Ques 09) WAP to perform various operation on Queue using Array? 
+Sol: 
+Algorithm: 
+1) Start. 
+2) Initialize: 
+a) An array a[5] for the queue. 
+b) Set front = -1 and rear = -1 to indicate an empty queue. 
+3) Main Loop: 
+a) Display menu options: 
+i) Queue Insert 
+ii) Queue Delete 
+iii)Queue Traverse 
+b) Input choice from the user. 
+4) If choice is 1 (Queue Insert): 
+a) Check if rear >= 4 (queue is full): 
+i) If yes, print "Queue Overflow". 
+ii) If no, proceed to insert: 
+(1)Input the value to be inserted. 
+(2)If front == -1, set both front = 0 and rear = 0 (queue becomes non-
+empty). 
+(3)Otherwise, increment rear by 1. 
+(4)Insert the value into a[rear]. 
+5) If choice is 2 (Queue Delete): 
+Check if front == -1 (queue is empty): 
+a) If yes, print "Queue Underflow". 
+b) If no, proceed to delete: 
+i) Store the value at a[front] for deletion. 
+ii) If front == rear, set both front = -1 and rear = -1 (queue becomes 
+empty). 
+iii)Otherwise, increment front by 1. 
+iv) Print the deleted value. 
+6) If choice is 3 (Queue Traverse):
+Check if front = -1 (queue is empty): 
+a) If yes, print "Queue is empty". 
+b) If no, display all elements from a[front] to a[rear]. 
+7) Prompt the user: "Do you want to continue? (Y/N)". 
+a) If the user inputs 'Y' or 'y', go back to step 3. 
+b) If 'N' or 'n', exit the loop and end the program. 
+Code: 
+#include<stdio.h> 
+#include<conio.h> 
+#include<stdlib.h> 
+void qIns();
+void qDel();
+void Traverse();
+int a[5];
+int front = -1 ,rear =-1;
+int main(){ 
+ int choice;
+ int i;
+ char ch;
+ do{ 
+ printf("1. Queue insert \n");
+ printf("2. Queue delete \n");
+ printf("3. Queue traverse \n");
+printf("Enter your Choice:");
+ scanf("%d",&choice);
+ switch(choice){ 
+ case 1: qIns();
+ break;
+ case 2: qDel();
+ break;
+ case 3: Traverse();
+ break;
+ default: printf("You have enter wrong choice!! \n");
+ } 
+ printf("Do you want to Continue(Y/N)");
+ fflush(stdin);
+ scanf("%c",&ch);
+ }while(ch =='Y'||ch=='y');
+return 0;
+} 
+void qIns(){ 
+ int val;
+ if(rear > 4){ 
+ printf("Queue Overflow");
+ }else{ 
+ printf("Enter the number:");
+ scanf("%d",&val);
+ if(front == -1){ 
+ front =0;
+rear =0;
+ }else{ 
+ rear+=1;
+ a[rear]=val;
+ } 
+ } 
+ 
+} 
+void Traverse(){ 
+ int i;
+ printf("Display Queue \n");
+ for(i=front ;i<=rear ;i++){ 
+ printf("%d ",a[i]);
+ } 
+ printf("\n");
+} 
+void qDel(){ 
+ int val;
+ if(front<0){ 
+ printf("Queue Underflow");
+ }else{ 
+ val = a[front];
+ if(front == rear){ 
+ front = -1;
+ rear = -1;
+ }else{ 
+ front = front +1;
+} 
+ printf("Deleted Element is %d \n",val);
+ } 
+}
